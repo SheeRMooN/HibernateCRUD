@@ -12,8 +12,13 @@ import java.util.List;
 
 @Repository
 public class PeopleRepo {
-    @Autowired
+
     SessionFactory factory ;
+
+    public PeopleRepo(SessionFactory sessionFactory) {
+        this.factory = sessionFactory;
+    }
+
 
     public List<People> getAll(){
         Session session = this.factory.getCurrentSession();
@@ -24,13 +29,17 @@ public class PeopleRepo {
     }
 
     public People save(People people){
-        factory.openSession().save(people);
+        factory.getCurrentSession().save(people);
         return people;
     }
     public People getById(Long id){
-        return (People) factory.getCurrentSession()
-                .createQuery("from People p where p.id = :id")
-                .setParameter("id",id).getSingleResult();
+        Session session = factory.getCurrentSession();
+        Query<People> query = session.createQuery("from People p where p.id = :id");
+                query.setParameter("id",id);
+        People people = query.getSingleResult();
+        session.close();
+        return people;
+//        return factory.getCurrentSession().get(People.class,id);
     }
     public String deleteById(Long id){
 //        factory.getCurrentSession().delete(getById(id));
@@ -39,10 +48,9 @@ public class PeopleRepo {
         factory.getCurrentSession().delete(people);
         return "success delete people id=" + id;
     }
-    public People update(People people, Long id){
+    public void update(People people, Long id){
         people.setId(id);
         factory.getCurrentSession().update(people);
-        return getByName(people.getName());
     }
     public People getByName(String name){
         return (People) factory.getCurrentSession()
