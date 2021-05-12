@@ -19,7 +19,7 @@ public class PeopleRepo {
         Session session = this.factory.getCurrentSession();
 //        List peoples = session.createQuery("from People").list();
         Query from_people = session.createQuery("from People");
-        List resultList = from_people.getResultList();
+        List<People> resultList = from_people.list();
         return resultList;
     }
 
