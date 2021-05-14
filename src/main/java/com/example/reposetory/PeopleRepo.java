@@ -27,6 +27,17 @@ public class PeopleRepo {
         List<People> resultList = from_people.list();
         return resultList;
     }
+//    @MockBean
+//    private SessionFactory sessionFactory;
+//    @MockBean
+//    private Session session;
+//    when(sessionFactory.getCurrentSession()).thenReturn(session);
+//    Query q = Mockito.mock(Query.class);
+
+//    when(session.createQuery("from People")).thenReturn(q);
+//    when((q).list()).thenReturn(peopleList);
+//    List list = repo.getAll();
+//    assertAll("People",()-> assertNotEquals(list,null),()->assertEquals(list.size(),2));
 
     public People save(People people){
         factory.getCurrentSession().save(people);

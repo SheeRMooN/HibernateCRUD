@@ -46,14 +46,14 @@ public class PeopleRepoTest {
     }
 
     @AfterEach
-    void tearDown() {
+    void tearDown() throws Exception{
         peopleList.clear();
         people1=null;
         people2=null;
     }
 
     @Test
-    void getAllTest() {
+    void getAllTest() throws Exception{
         Query q = Mockito.mock(Query.class);
         when(session.createQuery("from People")).thenReturn(q);
         when((q).list()).thenReturn(peopleList);
@@ -62,7 +62,7 @@ public class PeopleRepoTest {
     }
 
     @Test
-    void getByIdTest(){
+    void getByIdTest()throws Exception{
         Query query = Mockito.mock(Query.class);
         when(session.createQuery("from People p where p.id = :id")).thenReturn(query);
         when(query.setParameter("id",1L)).thenReturn(query);
@@ -71,7 +71,7 @@ public class PeopleRepoTest {
         assertEquals(people1, repo.getById(1L));
     }
     @Test
-    void getByNameTest(){
+    void getByNameTest()throws Exception{
         Query query = Mockito.mock(Query.class);
         when(session.createQuery("from People p where p.name = :name")).thenReturn(query);
         when(query.setParameter("name","name1")).thenReturn(query);
@@ -79,17 +79,17 @@ public class PeopleRepoTest {
         assertEquals(people1,repo.getByName("name1"));
     }
     @Test
-    void updateTest(){
+    void updateTest()throws Exception{
         repo.update(people1,1L);
         verify(session,times(1)).update(people1);
     }
     @Test
-    void deleteTest(){
+    void deleteTest()throws Exception{
         repo.deleteById(1L);
         verify(session,times(1)).delete(new People(1L,0,null));
     }
     @Test
-    void saveTest(){
+    void saveTest()throws Exception{
         repo.save(people1);
         verify(session,times(1)).save(people1);
     }
